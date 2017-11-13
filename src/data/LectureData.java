@@ -46,125 +46,126 @@ public class LectureData {
 			dataTrain = new ArrayList<ArrayList<String>>();
 			dataTest = new ArrayList<ArrayList<String>>();
 		
-			// Creation fichier de lecture 
+			// Création fichier de lecture 
 			InputStream ipsTrain = new FileInputStream(nomFichierTrain);
 			InputStream ipsTest = new FileInputStream(nomFichierTest);
-			if(ipsTrain != null && ipsTest != null){ // test que les fichiers ont bien été trouvé
+			
+			if (ipsTrain != null && ipsTest != null) { // teste que les fichiers ont bien été trouvés
 				InputStreamReader ipsrTrain = new InputStreamReader(ipsTrain);
 				InputStreamReader ipsrTest = new InputStreamReader(ipsTest);
 				BufferedReader brTrain = new BufferedReader(ipsrTrain);
 				BufferedReader brTest = new BufferedReader(ipsrTest);
 				String ligne;
-				int j;
 				ArrayList<ArrayList<String>> lignes = new ArrayList<ArrayList<String>>();
+				
 				// data train
-				int i = 0;
-				while((ligne = brTrain.readLine())!=null){
+				int j = 0;
+				while ((ligne = brTrain.readLine()) != null) {
 					j = 0;
 					ArrayList<String> simpleList = new ArrayList<String>();
 					ligne = ligne.replace(",", ";");
 					ligne = ligne.replace("\t", ",");
 					String[] elements = ligne.split(",");
-					while(j<elements.length){
+					while (j < elements.length) {
 						simpleList.add(elements[j]);
 						j++;
 					}
 					lignes.add(simpleList);
-					i++;
 				}
-				//System.out.print(lignes.get(1) + "\n");
-				//System.out.println(lignes.get(1).get(5));
+				
 				int l, k=0;
-				for(l=0; l<lignes.get(0).size(); l++){ // parcours sur les colonnes
-					//System.out.println("l " + l);
+				for (l=0; l<lignes.get(0).size(); l++) { // parcours sur les colonnes
+					
 					ArrayList<String> elements = new ArrayList<String>();
 					k = 0;
-					//System.out.println(lignes.size());
-					while(k<lignes.size()){
-						//System.out.println("k" + k);
-						if(l<lignes.get(k).size()){
+					
+					while (k<lignes.size()) {						
+						if (l<lignes.get(k).size()) {
 							elements.add(lignes.get(k).get(l));
 						} else {
 							elements.add("");
 						}
 						k++;
 					}
-					//System.out.println("k " + k);
-					//System.out.println(elements);
+					
 					dataTrain.add(elements);
 				}
 				brTrain.close();
+				
+				
 				//data test
-				/*while((ligne = brTest.readLine())!=null){
-					j = 0;
+				
+				/*while ((ligne = brTest.readLine()) != null) {
+					j = 0;						 * 
 					ArrayList<String> simpleList = new ArrayList<String>();
 					ligne = ligne.replace(",", ";");
 					ligne = ligne.replace("\t", ",");
 					String[] elements = ligne.split(",");
-					while(j<elements.length){
+					while (j<elements.length) {
 						simpleList.add(elements[j]);
 						j++;
 					}
 					lignes.add(simpleList);
-					i++;
 				}
-				//System.out.print(lignes.get(1) + "\n");
-				//System.out.println(lignes.get(1).get(5));
+				 
 				int l, k=0;
-				for(l=0; l<lignes.get(0).size(); l++){ // parcours sur les colonnes
-					//System.out.println("l " + l);
+				for (l=0; l<lignes.get(0).size(); l++) { // parcours sur les colonnes
+					 
 					ArrayList<String> elements = new ArrayList<String>();
 					k = 0;
-					//System.out.println(lignes.size());
-					while(k<lignes.size()){
-						//System.out.println("k" + k);
-						if(l<lignes.get(k).size()){
+					 
+					while (k<lignes.size()) {
+						if (l<lignes.get(k).size()) {
 							elements.add(lignes.get(k).get(l));
 						} else {
 							elements.add("");
 						}
 						k++;
-					}
-					//System.out.println("k " + k);
-					//System.out.println(elements);
+					}					 
 					dataTest.add(elements);
-				}*/
+				}
+				*/
+				
 				brTest.close();
 			} else {
 				System.out.println("Error: impossible to find the files");
 			}
 		}
-		catch(Exception e){
+		catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
 	
-	public void RowSelection(ArrayList<String> parameters){
+	public void RowSelection(ArrayList<String> parameters) {
 		ArrayList<Integer> parametersInt = new ArrayList<Integer>();
-		for(int i=0; i<parameters.size(); i++){
+		
+		for (int i=0; i<parameters.size(); i++) {
 			parametersInt.add(correspondance.get(parameters.get(i)));
 		}
-		//System.out.println(parametersInt);
+		
 		dataTrainFinal = new ArrayList<ArrayList<String>>();
 		dataTestFinal = new ArrayList<ArrayList<String>>();
 		ArrayList<ArrayList<String>> dataTrainInter = new ArrayList<ArrayList<String>>();
 		ArrayList<ArrayList<String>> dataTestInter = new ArrayList<ArrayList<String>>();
-		for(int i=0; i<parametersInt.size(); i++){
+		
+		for (int i=0; i<parametersInt.size(); i++) {
 			dataTrainInter.add(dataTrain.get(parametersInt.get(i)));
 			//dataTestInter.add(dataTest.get(parametersInt.get(i)));
 		}
+		
 		// inversion train
-		for(int j=0; j<dataTrainInter.get(0).size(); j++){ // parcours colonne
+		for (int j=0; j<dataTrainInter.get(0).size(); j++) { // parcours colonne
 			ArrayList<String> liste = new ArrayList<String>();
-			for(int i=0; i<dataTrainInter.size(); i++){ // parcours ligne
+			for (int i=0; i<dataTrainInter.size(); i++) { // parcours ligne
 				liste.add(dataTrainInter.get(i).get(j));
 			}
 			dataTrainFinal.add(liste);
 		}
+		
 		// inversion test
-		/*for(int j=0; j<dataTestInter.get(0).size(); j++){ // parcours colonne
+		/*for (int j=0; j<dataTestInter.get(0).size(); j++) { // parcours colonne
 			ArrayList<String> liste = new ArrayList<String>();
-			for(int i=0; i<dataTestInter.size(); i++){ // parcours ligne
+			for (int i=0; i<dataTestInter.size(); i++) { // parcours ligne
 				liste.add(dataTestInter.get(i).get(j));
 			}
 			dataTestFinal.add(liste);
