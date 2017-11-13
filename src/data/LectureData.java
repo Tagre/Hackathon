@@ -16,6 +16,8 @@ public class LectureData {
 	
 	public ArrayList<ArrayList<String>> dataTrain;
 	public ArrayList<ArrayList<String>> dataTest;
+	public ArrayList<ArrayList<String>> dataTrainFinal;
+	public ArrayList<ArrayList<String>> dataTestFinal;
 	
 	public LectureData(){
 		correspondance.put("Entry", 0);
@@ -29,12 +31,13 @@ public class LectureData {
 		correspondance.put("Cross-reference (PRINTS)", 8);
 		correspondance.put("Cross-reference (PROSITE)", 9);
 		correspondance.put("Cross-reference (ProDom)", 10);
-		correspondance.put("Taxonomic lineage (ALL)", 3);
-		correspondance.put("Taxonomic lineage (ALL)", 3);
-		correspondance.put("Taxonomic lineage (ALL)", 3);
-		correspondance.put("Taxonomic lineage (ALL)", 3);
-		correspondance.put("Taxonomic lineage (ALL)", 3);
-		
+		correspondance.put("Cross-reference (SFLD)", 11);
+		correspondance.put("Cross-reference (SMART)", 12);
+		correspondance.put("Cross-reference (SUPFAM)", 13);
+		correspondance.put("Cross-reference (TIGRFAMs)", 14);
+		correspondance.put("Cross-reference (HAMAP)", 15);
+		correspondance.put("Cross-reference (Gene3D)", 16);
+		correspondance.put("Cross-reference (PANTHER)", 17);
 	}
 	
 	public void Parsing(){
@@ -137,7 +140,35 @@ public class LectureData {
 	}
 	
 	public void RowSelection(ArrayList<String> parameters){
-		
+		ArrayList<Integer> parametersInt = new ArrayList<Integer>();
+		for(int i=0; i<parameters.size(); i++){
+			parametersInt.add(correspondance.get(parameters.get(i)));
+		}
+		//System.out.println(parametersInt);
+		dataTrainFinal = new ArrayList<ArrayList<String>>();
+		dataTestFinal = new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> dataTrainInter = new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> dataTestInter = new ArrayList<ArrayList<String>>();
+		for(int i=0; i<parametersInt.size(); i++){
+			dataTrainInter.add(dataTrain.get(parametersInt.get(i)));
+			//dataTestInter.add(dataTest.get(parametersInt.get(i)));
+		}
+		// inversion train
+		for(int j=0; j<dataTrainInter.get(0).size(); j++){ // parcours colonne
+			ArrayList<String> liste = new ArrayList<String>();
+			for(int i=0; i<dataTrainInter.size(); i++){ // parcours ligne
+				liste.add(dataTrainInter.get(i).get(j));
+			}
+			dataTrainFinal.add(liste);
+		}
+		// inversion test
+		/*for(int j=0; j<dataTestInter.get(0).size(); j++){ // parcours colonne
+			ArrayList<String> liste = new ArrayList<String>();
+			for(int i=0; i<dataTestInter.size(); i++){ // parcours ligne
+				liste.add(dataTestInter.get(i).get(j));
+			}
+			dataTestFinal.add(liste);
+		}*/
 	}
 
 }
